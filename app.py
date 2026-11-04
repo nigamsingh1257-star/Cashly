@@ -66,7 +66,7 @@ st.set_page_config(
 init_db()
 
 # ---------------------------------------------------------
-# Custom Modern CSS Styling (Dark Blue, Lavender, Clean White)
+# Custom Modern Fintech CSS (Dark Navy Blue, Clean White & Lavender)
 # ---------------------------------------------------------
 CUSTOM_CSS = """
 <style>
@@ -82,7 +82,7 @@ CUSTOM_CSS = """
         background-color: #F8FAFC;
     }
 
-    /* Responsive Block Container */
+    /* Responsive Main Block Container */
     .block-container {
         padding-top: 1.8rem !important;
         padding-bottom: 2.5rem !important;
@@ -91,14 +91,15 @@ CUSTOM_CSS = """
         max-width: 100% !important;
     }
 
-    /* Custom Header Banner */
+    /* Custom Header Banner (Deep Navy Gradient with Lavender Glow) */
     .hero-banner {
-        background: linear-gradient(135deg, #1E1B4B 0%, #312E81 50%, #4F46E5 100%);
+        background: linear-gradient(135deg, #0B132B 0%, #1E1B4B 45%, #312E81 80%, #4338CA 100%);
+        border: 1px solid rgba(199, 210, 254, 0.25);
         border-radius: 18px;
         padding: 24px 30px;
         color: white;
         margin-bottom: 20px;
-        box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.25);
+        box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.25), 0 4px 10px -2px rgba(15, 23, 42, 0.15);
     }
     .hero-title {
         font-size: clamp(20px, 2.5vw, 26px);
@@ -133,14 +134,13 @@ CUSTOM_CSS = """
         box-sizing: border-box;
     }
 
-    /* KPI Cards */
+    /* KPI Cards with Circular Micro-Badges */
     .kpi-card {
         background: #FFFFFF;
         border: 1px solid #E0E7FF;
-        border-radius: 14px;
-        padding: 16px 18px;
-        margin-bottom: 0px;
-        box-shadow: 0 4px 12px rgba(99, 102, 241, 0.05);
+        border-radius: 16px;
+        padding: 18px;
+        box-shadow: 0 4px 16px -2px rgba(99, 102, 241, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
         display: flex;
         flex-direction: column;
@@ -150,15 +150,31 @@ CUSTOM_CSS = """
     }
     .kpi-card:hover {
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(99, 102, 241, 0.12);
+        box-shadow: 0 10px 25px -4px rgba(99, 102, 241, 0.12);
+        border-color: #C7D2FE;
+    }
+    .kpi-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 8px;
+    }
+    .kpi-icon-badge {
+        width: 32px;
+        height: 32px;
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 15px;
+        flex-shrink: 0;
     }
     .kpi-label {
         font-size: 11.5px;
         font-weight: 700;
         color: #64748B;
         text-transform: uppercase;
-        letter-spacing: 0.4px;
-        margin-bottom: 6px;
+        letter-spacing: 0.5px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
@@ -167,7 +183,7 @@ CUSTOM_CSS = """
         hyphens: none;
     }
     .kpi-value {
-        font-size: clamp(20px, 2vw, 25px);
+        font-size: clamp(20px, 2.2vw, 26px);
         font-weight: 800;
         color: #1E1B4B;
         letter-spacing: -0.5px;
@@ -178,16 +194,52 @@ CUSTOM_CSS = """
         word-break: normal;
         overflow-wrap: normal;
         hyphens: none;
+        margin: 4px 0 2px 0;
     }
     .kpi-subtext {
         font-size: 11.5px;
-        margin-top: 6px;
         font-weight: 600;
         color: #64748B;
         white-space: normal;
         word-break: normal;
         overflow-wrap: break-word;
         line-height: 1.35;
+    }
+
+    /* Chart Card Container */
+    .chart-card {
+        background: #FFFFFF;
+        border: 1px solid #E0E7FF;
+        border-radius: 16px;
+        padding: 18px 20px;
+        margin-bottom: 18px;
+        box-shadow: 0 4px 16px -2px rgba(99, 102, 241, 0.04);
+        transition: box-shadow 0.2s ease;
+    }
+    .chart-card:hover {
+        box-shadow: 0 8px 22px rgba(99, 102, 241, 0.08);
+    }
+    .chart-card-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #F1F5F9;
+    }
+    .chart-card-title {
+        font-size: 15px;
+        font-weight: 800;
+        color: #1E1B4B;
+        letter-spacing: -0.3px;
+    }
+    .chart-card-badge {
+        font-size: 11px;
+        font-weight: 700;
+        color: #4F46E5;
+        background: #EEF2FF;
+        padding: 3px 9px;
+        border-radius: 20px;
     }
 
     /* Pill Badges */
@@ -219,17 +271,6 @@ CUSTOM_CSS = """
         display: inline-block;
     }
 
-    /* Insight Card */
-    .insight-card {
-        background: #FFFFFF;
-        border-left: 5px solid #6366F1;
-        border-radius: 12px;
-        padding: 16px 20px;
-        margin-bottom: 14px;
-        box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        word-break: normal;
-    }
-
     /* Streamlit Metric Overrides */
     div[data-testid="stMetricValue"] {
         font-size: clamp(18px, 1.8vw, 24px) !important;
@@ -258,14 +299,33 @@ CUSTOM_CSS = """
         text-overflow: ellipsis !important;
     }
 
+    /* Buttons */
     .stButton>button {
-        border-radius: 10px;
-        font-weight: 600;
-        transition: all 0.2s;
+        border-radius: 10px !important;
+        font-weight: 700 !important;
+        padding: 8px 16px !important;
+        transition: all 0.2s ease !important;
     }
     .stDownloadButton>button {
-        border-radius: 10px;
-        font-weight: 600;
+        border-radius: 10px !important;
+        font-weight: 700 !important;
+        padding: 8px 16px !important;
+    }
+
+    /* Sidebar Navigation Polish */
+    section[data-testid="stSidebar"] {
+        background-color: #FFFFFF !important;
+        border-right: 1px solid #E2E8F0 !important;
+    }
+    section[data-testid="stSidebar"] div[role="radiogroup"] > label {
+        padding: 8px 12px !important;
+        border-radius: 10px !important;
+        margin-bottom: 4px !important;
+        transition: all 0.2s ease !important;
+        cursor: pointer !important;
+    }
+    section[data-testid="stSidebar"] div[role="radiogroup"] > label:hover {
+        background-color: #EEF2FF !important;
     }
 
     /* Mobile Responsive Optimizations */
@@ -324,18 +384,23 @@ st.markdown(CUSTOM_CSS, unsafe_allow_html=True)
 # ---------------------------------------------------------
 def render_sidebar():
     with st.sidebar:
+        # Brand Logo & Tagline Header
         st.markdown(
             """
-            <div style="text-align: center; padding: 10px 0 20px 0;">
-                <div style="font-size: 40px; margin-bottom: 4px;">💳</div>
-                <h2 style="margin: 0; color: #1E1B4B; font-weight: 800; font-size: 24px; letter-spacing: -0.5px;">Cashly</h2>
-                <p style="margin: 0; color: #6366F1; font-size: 12px; font-weight: 700; letter-spacing: 0.5px;">TRACK SMART. SAVE MORE.</p>
+            <div style="padding: 6px 0 16px 0;">
+                <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 4px;">
+                    <div style="width: 44px; height: 44px; background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; box-shadow: 0 4px 14px rgba(79, 70, 229, 0.35);">💳</div>
+                    <div>
+                        <div style="font-size: 24px; font-weight: 800; color: #1E1B4B; letter-spacing: -0.5px; line-height: 1.1;">Cashly</div>
+                        <div style="font-size: 10.5px; font-weight: 700; color: #6366F1; letter-spacing: 0.8px;">TRACK SMART. SAVE MORE.</div>
+                    </div>
+                </div>
             </div>
             """,
             unsafe_allow_html=True
         )
 
-        # Main Navigation
+        # Main Navigation Radio
         selected_page = st.radio(
             "Navigation",
             options=[
@@ -360,17 +425,31 @@ def render_sidebar():
         is_demo = get_setting("is_demo_loaded", "0") == "1"
         rec_count = count_expenses()
 
-        st.markdown("#### ⚙️ Quick Overview")
-        if is_demo:
-            st.markdown('<span class="badge-demo">⚡ Demo Mode Active</span>', unsafe_allow_html=True)
-        else:
-            st.markdown('<span class="badge-rule">📁 Personal User Records</span>', unsafe_allow_html=True)
+        # Quick Financial Snapshot Card
+        badge_html = '<span class="badge-demo">⚡ Demo Mode</span>' if is_demo else '<span class="badge-rule">📁 Personal Mode</span>'
+        st.markdown(
+            f"""
+            <div style="background: white; border: 1px solid #E0E7FF; border-radius: 12px; padding: 14px; margin-bottom: 12px; box-shadow: 0 2px 8px rgba(99, 102, 241, 0.04);">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                    <span style="font-size: 11px; font-weight: 700; color: #64748B; text-transform: uppercase;">Financial Pace</span>
+                    <span style="font-size: 11px; font-weight: 700; color: #4F46E5;">{curr_symbol}{monthly_budget:,.0f} Bgt</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; font-size: 12px; margin-bottom: 4px;">
+                    <span style="color: #64748B;">Income:</span>
+                    <span style="font-weight: 700; color: #1E1B4B;">{curr_symbol}{monthly_income:,.0f}</span>
+                </div>
+                <div style="display: flex; justify-content: space-between; align-items: center; font-size: 12px; margin-bottom: 8px;">
+                    <span style="color: #64748B;">Mode:</span>
+                    {badge_html}
+                </div>
+                <div style="font-size: 11px; color: #94A3B8; text-align: center; border-top: 1px dashed #F1F5F9; padding-top: 6px;">
+                    <b>{rec_count}</b> transactions recorded
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
 
-        st.caption(f"Total Transactions: **{rec_count} records**")
-        st.caption(f"Monthly Income: **{curr_symbol}{monthly_income:,.0f}**")
-        st.caption(f"Monthly Budget: **{curr_symbol}{monthly_budget:,.0f}**")
-
-        st.markdown("---")
         with st.expander("☁️ Cloud Deployment Notice", expanded=False):
             st.markdown(
                 """
@@ -387,9 +466,8 @@ def render_sidebar():
 
         st.markdown(
             """
-            <div style="font-size: 11px; color: #64748B; text-align: center; margin-top: 10px;">
-                <b>Cashly v1.0</b><br>
-                Track Smart. Save More.<br>
+            <div style="font-size: 11px; color: #64748B; text-align: center; margin-top: 8px;">
+                <b>Cashly v1.0</b> • Track Smart. Save More.<br>
                 Streamlit • SQLite • Scikit-Learn • Plotly
             </div>
             """,
@@ -424,7 +502,7 @@ def get_current_month_expenses(df: pd.DataFrame) -> pd.DataFrame:
 # ---------------------------------------------------------
 def render_dashboard(curr_symbol: str, monthly_income: float, monthly_budget: float):
     st.markdown(
-        f"""
+        """
         <div class="hero-banner">
             <div class="hero-title">👋 Welcome to Cashly</div>
             <div class="hero-subtitle">Track Smart. Save More. – Intelligent Personal Finance & Budget Prediction</div>
@@ -437,9 +515,20 @@ def render_dashboard(curr_symbol: str, monthly_income: float, monthly_budget: fl
     curr_month_df = get_current_month_expenses(df)
     cat_budgets = get_category_budgets()
 
-    # Helpful empty state callout for first-time public cloud visitors
+    # Empty state banner for fresh visitors
     if df.empty:
-        st.info("👋 **Welcome to Cashly!** Your expense database is currently empty. To explore the Machine Learning forecasting model and interactive analytics right away, click **Load Realistic Demo Data** below.")
+        st.markdown(
+            """
+            <div style="background: white; border: 1.5px dashed #CBD5E1; border-radius: 16px; padding: 26px 20px; text-align: center; margin-bottom: 20px;">
+                <div style="font-size: 34px; margin-bottom: 8px;">🚀</div>
+                <div style="font-weight: 800; font-size: 18px; color: #1E1B4B; margin-bottom: 6px;">Your Cashly Ledger is Fresh & Ready</div>
+                <div style="font-size: 13.5px; color: #64748B; max-width: 520px; margin: 0 auto 16px auto; line-height: 1.5;">
+                    No transactions recorded yet. Click below to populate 7 months of realistic seasonal expenses to explore the Machine Learning forecasting model and Plotly analytics immediately!
+                </div>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
         col_load, _ = st.columns([1, 2])
         with col_load:
             if st.button("🚀 Load Realistic Demo Data (7 Months)", type="primary", key="dash_empty_load"):
@@ -464,7 +553,7 @@ def render_dashboard(curr_symbol: str, monthly_income: float, monthly_budget: fl
     elif budget_health["utilization_pct"] >= 85:
         st.warning(f"⚠️ **Budget Warning:** You have consumed {budget_health['utilization_pct']}% of your {ref_month_name} budget. {curr_symbol}{budget_health['remaining_budget']:,.2f} remaining.")
 
-    # Responsive KPI Summary Cards (Auto-fit across all screen widths)
+    # Responsive KPI Summary Cards with Icon Badges
     bal_color = "#10B981" if balance >= 0 else "#EF4444"
     sav_color = "#10B981" if savings_pct >= 20 else "#F59E0B"
     util_color = budget_health["color"]
@@ -473,27 +562,42 @@ def render_dashboard(curr_symbol: str, monthly_income: float, monthly_budget: fl
         f"""
         <div class="kpi-grid">
             <div class="kpi-card">
-                <div class="kpi-label">💸 {ref_month_name} Spend</div>
+                <div class="kpi-card-header">
+                    <span class="kpi-label">💸 {ref_month_name} Spend</span>
+                    <div class="kpi-icon-badge" style="background: #EEF2FF; color: #4F46E5;">💸</div>
+                </div>
                 <div class="kpi-value">{curr_symbol}{total_spent:,.0f}</div>
                 <div class="kpi-subtext" style="color: #6366F1;">{len(curr_month_df)} transactions</div>
             </div>
             <div class="kpi-card">
-                <div class="kpi-label">💰 Monthly Income</div>
+                <div class="kpi-card-header">
+                    <span class="kpi-label">💰 Monthly Income</span>
+                    <div class="kpi-icon-badge" style="background: #ECFDF5; color: #059669;">💰</div>
+                </div>
                 <div class="kpi-value">{curr_symbol}{monthly_income:,.0f}</div>
-                <div class="kpi-subtext" style="color: #10B981;">Fixed Monthly Target</div>
+                <div class="kpi-subtext" style="color: #10B981;">Fixed Target</div>
             </div>
             <div class="kpi-card">
-                <div class="kpi-label">⚖️ Net Balance</div>
+                <div class="kpi-card-header">
+                    <span class="kpi-label">⚖️ Net Balance</span>
+                    <div class="kpi-icon-badge" style="background: {'#ECFDF5' if balance >= 0 else '#FEF2F2'}; color: {'#059669' if balance >= 0 else '#DC2626'};">⚖️</div>
+                </div>
                 <div class="kpi-value" style="color: {bal_color};">{curr_symbol}{balance:,.0f}</div>
                 <div class="kpi-subtext" style="color: {bal_color};">{'Surplus' if balance >= 0 else 'Deficit'}</div>
             </div>
             <div class="kpi-card">
-                <div class="kpi-label">📈 Savings Rate</div>
+                <div class="kpi-card-header">
+                    <span class="kpi-label">📈 Savings Rate</span>
+                    <div class="kpi-icon-badge" style="background: #F5F3FF; color: #7C3AED;">📈</div>
+                </div>
                 <div class="kpi-value" style="color: {sav_color};">{savings_pct:.1f}%</div>
                 <div class="kpi-subtext" style="color: {sav_color};">Benchmark: 20%</div>
             </div>
             <div class="kpi-card">
-                <div class="kpi-label">🎯 Budget Used</div>
+                <div class="kpi-card-header">
+                    <span class="kpi-label">🎯 Budget Used</span>
+                    <div class="kpi-icon-badge" style="background: {'#FEF2F2' if budget_health['is_exceeded'] else '#FFFBEB'}; color: {'#DC2626' if budget_health['is_exceeded'] else '#D97706'};">🎯</div>
+                </div>
                 <div class="kpi-value" style="color: {util_color};">{budget_health['utilization_pct']}%</div>
                 <div class="kpi-subtext" style="color: {util_color};">{budget_health['status']}</div>
             </div>
@@ -508,18 +612,34 @@ def render_dashboard(curr_symbol: str, monthly_income: float, monthly_budget: fl
 
     st.write("")
 
-    # Visualizations Row
+    # Visualizations Row with Chart Cards
     chart_col1, chart_col2 = st.columns([1, 1])
 
     with chart_col1:
-        st.markdown(f"##### 🍩 Spending by Category ({ref_month_name})")
+        st.markdown(
+            f"""
+            <div class="chart-card-header">
+                <span class="chart-card-title">🍩 Spending by Category ({ref_month_name})</span>
+                <span class="chart-card-badge">Share of Wallet</span>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
         fig_donut = create_category_donut_chart(curr_month_df, curr_symbol)
-        st.plotly_chart(fig_donut, use_container_width=True)
+        st.plotly_chart(fig_donut, use_container_width=True, config={"displayModeBar": False, "responsive": True})
 
     with chart_col2:
-        st.markdown("##### 📈 Multi-Month Spending Trend")
+        st.markdown(
+            """
+            <div class="chart-card-header">
+                <span class="chart-card-title">📈 Multi-Month Spending Trend</span>
+                <span class="chart-card-badge">Spline Trajectory</span>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
         fig_trend = create_monthly_trend_chart(df, curr_symbol)
-        st.plotly_chart(fig_trend, use_container_width=True)
+        st.plotly_chart(fig_trend, use_container_width=True, config={"displayModeBar": False, "responsive": True})
 
     # ML Next Month Forecast Snapshot Card
     ml_res = train_and_predict_expenses(df)
@@ -561,7 +681,7 @@ def render_dashboard(curr_symbol: str, monthly_income: float, monthly_budget: fl
 # ---------------------------------------------------------
 def render_expense_manager(curr_symbol: str):
     st.markdown(
-        f"""
+        """
         <div class="hero-banner">
             <div class="hero-title">💳 Expense Manager</div>
             <div class="hero-subtitle">Add new expenses, modify historical records, and filter your financial ledger</div>
@@ -582,12 +702,12 @@ def render_expense_manager(curr_symbol: str):
         with st.form("add_expense_form", clear_on_submit=True):
             fcol1, fcol2 = st.columns(2)
             with fcol1:
-                exp_date = st.date_input("Transaction Date", value=date.today())
-                amount = st.number_input(f"Amount ({curr_symbol})", min_value=1.0, max_value=1000000.0, value=250.0, step=10.0)
-                category = st.selectbox("Expense Category", options=CATEGORIES, index=0)
+                exp_date = st.date_input("Transaction Date", value=date.today(), help="Date when expense occurred")
+                amount = st.number_input(f"Amount ({curr_symbol})", min_value=1.0, max_value=1000000.0, value=250.0, step=10.0, help="Amount spent")
+                category = st.selectbox("Expense Category", options=CATEGORIES, index=0, help="Choose primary classification")
 
             with fcol2:
-                payment_method = st.selectbox("Payment Method", options=PAYMENT_METHODS, index=0)
+                payment_method = st.selectbox("Payment Method", options=PAYMENT_METHODS, index=0, help="Mode of transaction")
                 description = st.text_input("Description / Merchant", placeholder="e.g. Grocery items at supermarket, Metro pass, Netflix")
 
             submit_add = st.form_submit_button("💾 Save Expense Record", use_container_width=True)
@@ -710,7 +830,7 @@ def render_expense_manager(curr_symbol: str):
 # ---------------------------------------------------------
 def render_analytics(curr_symbol: str, monthly_income: float):
     st.markdown(
-        f"""
+        """
         <div class="hero-banner">
             <div class="hero-title">📈 Data Analytics & Spending Patterns</div>
             <div class="hero-subtitle">Interactive visual breakdowns, temporal patterns, and income vs expense ratios</div>
@@ -750,38 +870,86 @@ def render_analytics(curr_symbol: str, monthly_income: float):
     # Row 1: Donut Chart & Monthly Trend
     r1_col1, r1_col2 = st.columns(2)
     with r1_col1:
-        st.markdown("##### 🍩 Category Spending Distribution")
+        st.markdown(
+            """
+            <div class="chart-card-header">
+                <span class="chart-card-title">🍩 Category Spending Distribution</span>
+                <span class="chart-card-badge">Share %</span>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
         fig_donut = create_category_donut_chart(df_chart, curr_symbol)
-        st.plotly_chart(fig_donut, use_container_width=True)
+        st.plotly_chart(fig_donut, use_container_width=True, config={"displayModeBar": False, "responsive": True})
 
     with r1_col2:
-        st.markdown("##### 📈 Monthly Spending Trajectory")
+        st.markdown(
+            """
+            <div class="chart-card-header">
+                <span class="chart-card-title">📈 Monthly Spending Trajectory</span>
+                <span class="chart-card-badge">Multi-Month Spline</span>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
         fig_trend = create_monthly_trend_chart(df_chart, curr_symbol)
-        st.plotly_chart(fig_trend, use_container_width=True)
+        st.plotly_chart(fig_trend, use_container_width=True, config={"displayModeBar": False, "responsive": True})
 
     # Row 2: Income vs Expenses & Top Spending Ranking
     r2_col1, r2_col2 = st.columns(2)
     with r2_col1:
-        st.markdown("##### ⚖️ Monthly Income vs Expenses Comparison")
+        st.markdown(
+            """
+            <div class="chart-card-header">
+                <span class="chart-card-title">⚖️ Monthly Income vs Expenses Comparison</span>
+                <span class="chart-card-badge">Target vs Actual</span>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
         fig_inc_exp = create_income_vs_expense_chart(df_chart, monthly_income, curr_symbol)
-        st.plotly_chart(fig_inc_exp, use_container_width=True)
+        st.plotly_chart(fig_inc_exp, use_container_width=True, config={"displayModeBar": False, "responsive": True})
 
     with r2_col2:
-        st.markdown("##### 🏆 Ranked Top Spending Categories")
+        st.markdown(
+            """
+            <div class="chart-card-header">
+                <span class="chart-card-title">🏆 Ranked Top Spending Categories</span>
+                <span class="chart-card-badge">Primary Drivers</span>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
         fig_top = create_top_categories_bar_chart(df_chart, curr_symbol)
-        st.plotly_chart(fig_top, use_container_width=True)
+        st.plotly_chart(fig_top, use_container_width=True, config={"displayModeBar": False, "responsive": True})
 
     # Row 3: Daily Timeline & Day of Week Behavioral Analysis
     r3_col1, r3_col2 = st.columns(2)
     with r3_col1:
-        st.markdown("##### 📅 Daily Spending Rhythm & 7-Day Moving Average")
+        st.markdown(
+            """
+            <div class="chart-card-header">
+                <span class="chart-card-title">📅 Daily Spending Rhythm & 7-Day Moving Avg</span>
+                <span class="chart-card-badge">Moving Average</span>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
         fig_daily = create_daily_spending_chart(df_chart, curr_symbol)
-        st.plotly_chart(fig_daily, use_container_width=True)
+        st.plotly_chart(fig_daily, use_container_width=True, config={"displayModeBar": False, "responsive": True})
 
     with r3_col2:
-        st.markdown("##### 🗓️ Day of Week Spending Analysis (Weekend vs Weekday)")
+        st.markdown(
+            """
+            <div class="chart-card-header">
+                <span class="chart-card-title">🗓️ Day of Week Spending Analysis</span>
+                <span class="chart-card-badge">Weekend vs Weekday</span>
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
         fig_dow = create_day_of_week_chart(df_chart, curr_symbol)
-        st.plotly_chart(fig_dow, use_container_width=True)
+        st.plotly_chart(fig_dow, use_container_width=True, config={"displayModeBar": False, "responsive": True})
 
     # Tabular Breakdown
     st.markdown("##### 📊 Category Performance Statistics")
@@ -808,7 +976,7 @@ def render_analytics(curr_symbol: str, monthly_income: float):
 # ---------------------------------------------------------
 def render_ml_predictor(curr_symbol: str, monthly_budget: float):
     st.markdown(
-        f"""
+        """
         <div class="hero-banner">
             <div class="hero-title">🤖 Machine Learning Budget Predictor</div>
             <div class="hero-subtitle">Time-series regression model with chronological train/test splitting and MAE evaluation</div>
@@ -840,16 +1008,16 @@ def render_ml_predictor(curr_symbol: str, monthly_budget: float):
     # Success: ML Model Results
     st.markdown(
         f"""
-        <div style="background: white; border: 1px solid #E0E7FF; border-radius: 14px; padding: 20px; margin-bottom: 20px;">
-            <div style="display: flex; justify-content: space-between; align-items: center;">
+        <div style="background: white; border: 1px solid #E0E7FF; border-radius: 16px; padding: 20px; margin-bottom: 20px; box-shadow: 0 4px 16px rgba(99, 102, 241, 0.05);">
+            <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
                 <div>
                     <span class="badge-ml">🤖 Scikit-Learn Model Active</span>
-                    <h3 style="margin: 8px 0 4px 0; color: #1E1B4B; font-weight: 800;">Next-Month Forecast: {ml_results['next_month_name']}</h3>
-                    <p style="margin: 0; color: #64748B; font-size: 14px;">Trained on {ml_results['month_count']} sequential months using chronological validation.</p>
+                    <h3 style="margin: 8px 0 4px 0; color: #1E1B4B; font-weight: 800; font-size: 22px;">Next-Month Forecast: {ml_results['next_month_name']}</h3>
+                    <p style="margin: 0; color: #64748B; font-size: 13.5px;">Trained on {ml_results['month_count']} sequential months using strictly chronological validation.</p>
                 </div>
                 <div style="text-align: right;">
-                    <div style="font-size: 32px; font-weight: 800; color: #4F46E5;">{curr_symbol}{ml_results['predicted_next_expense']:,.2f}</div>
-                    <div style="font-size: 13px; color: #6366F1; font-weight: 600;">Expected Range: {curr_symbol}{ml_results['lower_bound']:,.0f} – {curr_symbol}{ml_results['upper_bound']:,.0f}</div>
+                    <div style="font-size: clamp(24px, 3vw, 32px); font-weight: 800; color: #4F46E5;">{curr_symbol}{ml_results['predicted_next_expense']:,.2f}</div>
+                    <div style="font-size: 12.5px; color: #6366F1; font-weight: 600;">Expected Range: {curr_symbol}{ml_results['lower_bound']:,.0f} – {curr_symbol}{ml_results['upper_bound']:,.0f}</div>
                 </div>
             </div>
         </div>
@@ -882,14 +1050,14 @@ def render_ml_predictor(curr_symbol: str, monthly_budget: float):
         st.metric(
             label="Baseline Naive Comparison",
             value=f"{curr_symbol}{ml_results['naive_mae']:,.2f}",
-            delta=f"{curr_symbol}{diff_naive:,.2f} better than guessing",
+            delta=f"{curr_symbol}{diff_naive:,.2f} better than naive",
             delta_color="normal"
         )
 
     # Interactive Forecast Visualization
     st.markdown("##### 📈 Chronological Split & ML Forecasting Visualizer")
     fig_ml = create_ml_forecast_chart(ml_results, curr_symbol)
-    st.plotly_chart(fig_ml, use_container_width=True)
+    st.plotly_chart(fig_ml, use_container_width=True, config={"displayModeBar": False, "responsive": True})
 
     # Deep Dive: Chronological Holdout Evaluation & Feature Importance
     d_col1, d_col2 = st.columns(2)
@@ -934,7 +1102,7 @@ def render_ml_predictor(curr_symbol: str, monthly_budget: float):
 # ---------------------------------------------------------
 def render_insights(curr_symbol: str, monthly_income: float, monthly_budget: float):
     st.markdown(
-        f"""
+        """
         <div class="hero-banner">
             <div class="hero-title">💡 Smart Budget Insights & Advice</div>
             <div class="hero-subtitle">Automated financial heuristics and machine learning intelligence to optimize savings</div>
@@ -971,17 +1139,26 @@ def render_insights(curr_symbol: str, monthly_income: float, monthly_budget: flo
             f"""
             <div class="kpi-grid-3">
                 <div class="kpi-card">
-                    <div class="kpi-label">🏠 Needs (Target: 50%)</div>
+                    <div class="kpi-card-header">
+                        <span class="kpi-label">🏠 Needs (Target: 50%)</span>
+                        <div class="kpi-icon-badge" style="background: #EEF2FF; color: #4F46E5;">🏠</div>
+                    </div>
                     <div class="kpi-value">{rule_info['needs_pct']}%</div>
                     <div class="kpi-subtext">{curr_symbol}{rule_info['needs_spent']:,.0f} (Bills, Food, Health, Education)</div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">🛍️ Wants (Target: 30%)</div>
+                    <div class="kpi-card-header">
+                        <span class="kpi-label">🛍️ Wants (Target: 30%)</span>
+                        <div class="kpi-icon-badge" style="background: #FDF4FF; color: #C026D3;">🛍️</div>
+                    </div>
                     <div class="kpi-value">{rule_info['wants_pct']}%</div>
                     <div class="kpi-subtext">{curr_symbol}{rule_info['wants_spent']:,.0f} (Shopping, Travel, Entertainment)</div>
                 </div>
                 <div class="kpi-card">
-                    <div class="kpi-label">💰 Savings (Target: 20%)</div>
+                    <div class="kpi-card-header">
+                        <span class="kpi-label">💰 Savings (Target: 20%)</span>
+                        <div class="kpi-icon-badge" style="background: #ECFDF5; color: #059669;">💰</div>
+                    </div>
                     <div class="kpi-value">{rule_info['savings_pct']}%</div>
                     <div class="kpi-subtext">{curr_symbol}{rule_info['savings']:,.0f} Net Savings Buffer</div>
                 </div>
@@ -1053,7 +1230,7 @@ def render_insights(curr_symbol: str, monthly_income: float, monthly_budget: flo
 # ---------------------------------------------------------
 def render_reports(curr_symbol: str, monthly_income: float, monthly_budget: float):
     st.markdown(
-        f"""
+        """
         <div class="hero-banner">
             <div class="hero-title">📑 Reports & Data Export</div>
             <div class="hero-subtitle">Generate monthly statements, filter custom periods, and export CSV files</div>
@@ -1150,7 +1327,7 @@ def render_reports(curr_symbol: str, monthly_income: float, monthly_budget: floa
 # ---------------------------------------------------------
 def render_settings(curr_symbol: str, monthly_income: float, monthly_budget: float):
     st.markdown(
-        f"""
+        """
         <div class="hero-banner">
             <div class="hero-title">⚙️ Settings & Demo Data Controls</div>
             <div class="hero-subtitle">Customize budget limits, currency preferences, and toggle sample datasets</div>

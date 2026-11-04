@@ -1,83 +1,100 @@
 """
 Cashly - Data Analytics & Plotly Visualizations
-Provides interactive charts styled with modern Dark Blue & Lavender themes.
+Provides interactive charts styled with modern Dark Navy Blue & Lavender fintech aesthetics.
 """
 
 import pandas as pd
 import numpy as np
-import plotly.express as px
 import plotly.graph_objects as go
 from datetime import datetime
 
-# Color Palette: Dark Blue, Indigo, and Lavender Harmony
+# Fintech Color Palette: Deep Navy, Indigo, Soft Lavender, Mint Emerald & Accents
 COLOR_PALETTE = [
-    "#4F46E5",  # Indigo
+    "#4F46E5",  # Vibrant Iris / Indigo
     "#818CF8",  # Soft Lavender
-    "#6366F1",  # Vibrant Iris
-    "#A5B4FC",  # Pale Lavender
-    "#312E81",  # Deep Midnight Blue
-    "#C084FC",  # Lilac / Orchid
+    "#6366F1",  # Core Iris
+    "#A5B4FC",  # Pale Lilac
+    "#312E81",  # Deep Midnight Navy
+    "#C084FC",  # Orchid Lavender
     "#38BDF8",  # Sky Blue
-    "#F43F5E",  # Rose Accent
+    "#10B981",  # Mint Emerald
 ]
 
 LAYOUT_DEFAULTS = dict(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
-    font=dict(family="Inter, system-ui, -apple-system, sans-serif", color="#1E293B"),
-    margin=dict(l=20, r=20, t=40, b=20),
-    legend=dict(orientation="h", yanchor="bottom", y=1.02, xanchor="right", x=1)
+    font=dict(family="'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif", color="#1E293B", size=12),
+    margin=dict(l=15, r=15, t=35, b=15),
+    legend=dict(
+        orientation="h",
+        yanchor="bottom",
+        y=1.02,
+        xanchor="right",
+        x=1,
+        font=dict(size=11, color="#475569")
+    ),
+    hoverlabel=dict(
+        bgcolor="#1E1B4B",
+        font_size=12,
+        font_family="'Plus Jakarta Sans', sans-serif",
+        font_color="#FFFFFF"
+    )
 )
 
 
 def create_category_donut_chart(df: pd.DataFrame, currency_symbol: str = "₹") -> go.Figure:
     """
-    Renders an interactive Donut Chart for category-wise expense distribution.
+    Renders an interactive Donut Chart with clean percentage labels and centered financial total.
     """
     if df.empty:
         fig = go.Figure()
-        fig.add_annotation(text="No expense data available", showarrow=False, font=dict(size=14, color="#64748B"))
+        fig.add_annotation(
+            text="No expense data recorded yet",
+            showarrow=False,
+            font=dict(size=13, color="#94A3B8")
+        )
         fig.update_layout(**LAYOUT_DEFAULTS)
         return fig
 
     cat_summary = df.groupby("category")["amount"].sum().reset_index()
     cat_summary = cat_summary.sort_values(by="amount", ascending=False)
+    total_spend = cat_summary["amount"].sum()
 
     fig = go.Figure(data=[
         go.Pie(
             labels=cat_summary["category"],
             values=cat_summary["amount"],
-            hole=0.55,
-            marker=dict(colors=COLOR_PALETTE, line=dict(color="#FFFFFF", width=2)),
-            textinfo="percent+label",
+            hole=0.62,
+            marker=dict(colors=COLOR_PALETTE, line=dict(color="#FFFFFF", width=2.5)),
+            textinfo="percent",
             textposition="inside",
-            hovertemplate="<b>%{label}</b><br>Total: " + currency_symbol + "%{value:,.2f}<br>Share: %{percent}<extra></extra>"
+            insidetextorientation="horizontal",
+            hovertemplate="<b>%{label}</b><br>Amount: " + currency_symbol + "%{value:,.2f}<br>Share: %{percent}<extra></extra>"
         )
     ])
 
-    total_spend = cat_summary["amount"].sum()
     fig.add_annotation(
-        text=f"Total<br><b>{currency_symbol}{total_spend:,.0f}</b>",
+        text=f"<span style='font-size:11px;color:#64748B;font-weight:600;'>TOTAL SPEND</span><br><b style='font-size:17px;color:#1E1B4B;'>{currency_symbol}{total_spend:,.0f}</b>",
         x=0.5, y=0.5,
-        font=dict(size=14, color="#1E1B4B", family="sans-serif"),
+        font=dict(family="'Plus Jakarta Sans', sans-serif"),
         showarrow=False
     )
 
     fig.update_layout(
         **LAYOUT_DEFAULTS,
         showlegend=True,
-        height=360
+        height=350
     )
     return fig
 
 
 def create_monthly_trend_chart(df: pd.DataFrame, currency_symbol: str = "₹") -> go.Figure:
     """
-    Renders a smooth line chart with gradient area for monthly expense trends.
+    Renders a smooth spline line chart with gradient fill for monthly expense trajectories.
     """
     if df.empty:
         fig = go.Figure()
-        fig.add_annotation(text="No expense data available", showarrow=False, font=dict(size=14, color="#64748B"))
+        fig.add_annotation(text="No expense data available", showarrow=False, font=dict(size=13, color="#94A3B8"))
         fig.update_layout(**LAYOUT_DEFAULTS)
         return fig
 
@@ -99,13 +116,13 @@ def create_monthly_trend_chart(df: pd.DataFrame, currency_symbol: str = "₹") -
         fill="tozeroy",
         fillcolor="rgba(99, 102, 241, 0.12)",
         name="Monthly Spending",
-        hovertemplate="<b>%{x}</b><br>Expenses: " + currency_symbol + "%{y:,.2f}<extra></extra>"
+        hovertemplate="<b>%{x}</b><br>Total Spend: " + currency_symbol + "%{y:,.2f}<extra></extra>"
     ))
 
     fig.update_layout(
         **LAYOUT_DEFAULTS,
         xaxis=dict(title="", showgrid=False, tickfont=dict(size=11, color="#64748B")),
-        yaxis=dict(title=f"Total Amount ({currency_symbol})", showgrid=True, gridcolor="#F1F5F9", tickfont=dict(size=11, color="#64748B")),
+        yaxis=dict(title=f"Amount ({currency_symbol})", showgrid=True, gridcolor="#F1F5F9", tickfont=dict(size=11, color="#64748B")),
         height=340
     )
     return fig
@@ -113,11 +130,11 @@ def create_monthly_trend_chart(df: pd.DataFrame, currency_symbol: str = "₹") -
 
 def create_income_vs_expense_chart(df: pd.DataFrame, monthly_income: float, currency_symbol: str = "₹") -> go.Figure:
     """
-    Renders a grouped comparison bar chart for Monthly Income vs Total Expenses.
+    Renders a grouped comparison bar chart for Monthly Income vs Total Outlays.
     """
     if df.empty:
         fig = go.Figure()
-        fig.add_annotation(text="No expense data available", showarrow=False, font=dict(size=14, color="#64748B"))
+        fig.add_annotation(text="No expense data available", showarrow=False, font=dict(size=13, color="#94A3B8"))
         fig.update_layout(**LAYOUT_DEFAULTS)
         return fig
 
@@ -131,29 +148,29 @@ def create_income_vs_expense_chart(df: pd.DataFrame, monthly_income: float, curr
 
     fig = go.Figure()
 
-    # Bar 1: Income
+    # Bar 1: Income (Mint Emerald)
     fig.add_trace(go.Bar(
         x=monthly["month_label"],
         y=[monthly_income] * len(monthly),
-        name="Income",
-        marker_color="#10B981",  # Emerald Green
+        name="Income Target",
+        marker=dict(color="#10B981", cornerradius=4),
         hovertemplate="<b>%{x}</b><br>Income: " + currency_symbol + "%{y:,.2f}<extra></extra>"
     ))
 
-    # Bar 2: Expenses
+    # Bar 2: Expenses (Core Iris)
     fig.add_trace(go.Bar(
         x=monthly["month_label"],
         y=monthly["amount"],
-        name="Expenses",
-        marker_color="#6366F1",  # Indigo/Lavender
+        name="Actual Expenses",
+        marker=dict(color="#6366F1", cornerradius=4),
         hovertemplate="<b>%{x}</b><br>Expenses: " + currency_symbol + "%{y:,.2f}<extra></extra>"
     ))
 
     fig.update_layout(
         **LAYOUT_DEFAULTS,
         barmode="group",
-        xaxis=dict(title="", showgrid=False),
-        yaxis=dict(title=f"Amount ({currency_symbol})", showgrid=True, gridcolor="#F1F5F9"),
+        xaxis=dict(title="", showgrid=False, tickfont=dict(size=11, color="#64748B")),
+        yaxis=dict(title=f"Amount ({currency_symbol})", showgrid=True, gridcolor="#F1F5F9", tickfont=dict(size=11, color="#64748B")),
         height=340
     )
     return fig
@@ -161,11 +178,11 @@ def create_income_vs_expense_chart(df: pd.DataFrame, monthly_income: float, curr
 
 def create_top_categories_bar_chart(df: pd.DataFrame, currency_symbol: str = "₹") -> go.Figure:
     """
-    Renders a horizontal ranking bar chart of top spending categories.
+    Renders a clean horizontal bar chart ranking top spending categories.
     """
     if df.empty:
         fig = go.Figure()
-        fig.add_annotation(text="No expense data available", showarrow=False, font=dict(size=14, color="#64748B"))
+        fig.add_annotation(text="No expense data available", showarrow=False, font=dict(size=13, color="#94A3B8"))
         fig.update_layout(**LAYOUT_DEFAULTS)
         return fig
 
@@ -178,8 +195,9 @@ def create_top_categories_bar_chart(df: pd.DataFrame, currency_symbol: str = "�
         orientation="h",
         marker=dict(
             color=cat_sums["amount"],
-            colorscale=[[0, "#A5B4FC"], [0.5, "#6366F1"], [1.0, "#312E81"]],
-            showscale=False
+            colorscale=[[0, "#C7D2FE"], [0.5, "#818CF8"], [1.0, "#4F46E5"]],
+            showscale=False,
+            cornerradius=4
         ),
         text=cat_sums["amount"].apply(lambda x: f"{currency_symbol}{x:,.0f}"),
         textposition="outside",
@@ -188,8 +206,8 @@ def create_top_categories_bar_chart(df: pd.DataFrame, currency_symbol: str = "�
 
     fig.update_layout(
         **LAYOUT_DEFAULTS,
-        xaxis=dict(title=f"Spending ({currency_symbol})", showgrid=True, gridcolor="#F1F5F9"),
-        yaxis=dict(title="", showgrid=False),
+        xaxis=dict(title=f"Spending ({currency_symbol})", showgrid=True, gridcolor="#F1F5F9", tickfont=dict(size=11, color="#64748B")),
+        yaxis=dict(title="", showgrid=False, tickfont=dict(size=11, color="#1E293B")),
         height=330
     )
     return fig
@@ -197,20 +215,19 @@ def create_top_categories_bar_chart(df: pd.DataFrame, currency_symbol: str = "�
 
 def create_daily_spending_chart(df: pd.DataFrame, currency_symbol: str = "₹") -> go.Figure:
     """
-    Renders daily spending timeline with category color tagging.
+    Renders daily spending rhythm with 7-day moving average trend.
     """
     if df.empty:
         fig = go.Figure()
-        fig.add_annotation(text="No expense data available", showarrow=False, font=dict(size=14, color="#64748B"))
+        fig.add_annotation(text="No expense data available", showarrow=False, font=dict(size=13, color="#94A3B8"))
         fig.update_layout(**LAYOUT_DEFAULTS)
         return fig
 
     df_copy = df.copy()
     df_copy["date_str"] = pd.to_datetime(df_copy["date"]).dt.strftime("%Y-%m-%d")
     daily = df_copy.groupby("date_str")["amount"].sum().reset_index()
-    daily = daily.sort_values("date_str").tail(45)  # Last 45 days for readability
+    daily = daily.sort_values("date_str").tail(45)  # Recent 45 days
 
-    # Rolling 7-day average
     daily["rolling_7"] = daily["amount"].rolling(window=7, min_periods=1).mean()
 
     fig = go.Figure()
@@ -218,8 +235,7 @@ def create_daily_spending_chart(df: pd.DataFrame, currency_symbol: str = "₹") 
         x=daily["date_str"],
         y=daily["amount"],
         name="Daily Total",
-        marker_color="#818CF8",
-        opacity=0.75,
+        marker=dict(color="#A5B4FC", opacity=0.8, cornerradius=3),
         hovertemplate="<b>%{x}</b><br>Daily Spend: " + currency_symbol + "%{y:,.2f}<extra></extra>"
     ))
 
@@ -234,8 +250,8 @@ def create_daily_spending_chart(df: pd.DataFrame, currency_symbol: str = "₹") 
 
     fig.update_layout(
         **LAYOUT_DEFAULTS,
-        xaxis=dict(title="", showgrid=False, tickangle=-45),
-        yaxis=dict(title=f"Amount ({currency_symbol})", showgrid=True, gridcolor="#F1F5F9"),
+        xaxis=dict(title="", showgrid=False, tickangle=-45, tickfont=dict(size=10, color="#64748B")),
+        yaxis=dict(title=f"Amount ({currency_symbol})", showgrid=True, gridcolor="#F1F5F9", tickfont=dict(size=11, color="#64748B")),
         height=320
     )
     return fig
@@ -243,11 +259,11 @@ def create_daily_spending_chart(df: pd.DataFrame, currency_symbol: str = "₹") 
 
 def create_day_of_week_chart(df: pd.DataFrame, currency_symbol: str = "₹") -> go.Figure:
     """
-    Analyzes which days of the week experience the heaviest spending.
+    Analyzes weekend vs weekday expenditure patterns with color-coded prominence.
     """
     if df.empty:
         fig = go.Figure()
-        fig.add_annotation(text="No expense data available", showarrow=False, font=dict(size=14, color="#64748B"))
+        fig.add_annotation(text="No expense data available", showarrow=False, font=dict(size=13, color="#94A3B8"))
         fig.update_layout(**LAYOUT_DEFAULTS)
         return fig
 
@@ -256,28 +272,28 @@ def create_day_of_week_chart(df: pd.DataFrame, currency_symbol: str = "₹") -> 
     df_copy["day_name"] = df_copy["date"].dt.day_name()
     df_copy["day_num"] = df_copy["date"].dt.dayofweek
 
-    days_order = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday"]
     dow = df_copy.groupby(["day_num", "day_name"]).agg(
         total_spend=("amount", "sum"),
         avg_spend=("amount", "mean"),
         count=("amount", "count")
     ).reset_index().sort_values("day_num")
 
-    colors = ["#4F46E5" if d in ["Saturday", "Sunday"] else "#A5B4FC" for d in dow["day_name"]]
+    # Darker vibrant indigo for weekends, soft lilac for weekdays
+    colors = ["#4F46E5" if d in ["Saturday", "Sunday"] else "#C7D2FE" for d in dow["day_name"]]
 
     fig = go.Figure(go.Bar(
         x=dow["day_name"],
         y=dow["total_spend"],
-        marker_color=colors,
+        marker=dict(color=colors, cornerradius=4),
         text=dow["total_spend"].apply(lambda x: f"{currency_symbol}{x:,.0f}"),
         textposition="outside",
-        hovertemplate="<b>%{x}</b><br>Total Spend: " + currency_symbol + "%{y:,.2f}<extra></extra>"
+        hovertemplate="<b>%{x}</b><br>Total Spent: " + currency_symbol + "%{y:,.2f}<extra></extra>"
     ))
 
     fig.update_layout(
         **LAYOUT_DEFAULTS,
-        xaxis=dict(title="", showgrid=False),
-        yaxis=dict(title=f"Total Spent ({currency_symbol})", showgrid=True, gridcolor="#F1F5F9"),
+        xaxis=dict(title="", showgrid=False, tickfont=dict(size=11, color="#475569")),
+        yaxis=dict(title=f"Total ({currency_symbol})", showgrid=True, gridcolor="#F1F5F9", tickfont=dict(size=11, color="#64748B")),
         height=310
     )
     return fig
@@ -285,14 +301,14 @@ def create_day_of_week_chart(df: pd.DataFrame, currency_symbol: str = "₹") -> 
 
 def create_ml_forecast_chart(ml_results: dict, currency_symbol: str = "₹") -> go.Figure:
     """
-    Renders chronological Train/Test split visualization and Next-Month ML forecast with confidence band.
+    Visualizes chronological train/test splitting and Scikit-Learn next-month forecast with confidence band.
     """
     fig = go.Figure()
     if ml_results.get("status") != "success":
         fig.add_annotation(
             text="Insufficient data to render ML forecast visualization.",
             showarrow=False,
-            font=dict(size=14, color="#64748B")
+            font=dict(size=13, color="#94A3B8")
         )
         fig.update_layout(**LAYOUT_DEFAULTS)
         return fig
@@ -300,7 +316,6 @@ def create_ml_forecast_chart(ml_results: dict, currency_symbol: str = "₹") -> 
     featured_df = ml_results["featured_df"]
     split_idx = ml_results["split_index"]
 
-    # Historical timeline dates
     dates = [dt.strftime("%b %Y") for dt in featured_df["month_timestamp"]]
     train_dates = dates[:split_idx]
     train_actuals = featured_df["total_expense"].iloc[:split_idx].tolist()
@@ -314,41 +329,40 @@ def create_ml_forecast_chart(ml_results: dict, currency_symbol: str = "₹") -> 
     lower_bound = ml_results["lower_bound"]
     upper_bound = ml_results["upper_bound"]
 
-    # 1. Historical Training Data
+    # 1. Training Actuals (Deep Midnight Navy)
     fig.add_trace(go.Scatter(
         x=train_dates,
         y=train_actuals,
         mode="lines+markers",
         name="Training Data (Actual)",
-        line=dict(color="#312E81", width=3),
-        marker=dict(size=7, color="#312E81"),
+        line=dict(color="#1E1B4B", width=3),
+        marker=dict(size=8, color="#1E1B4B", line=dict(color="#FFFFFF", width=1.5)),
         hovertemplate="<b>Training Actual</b>: " + currency_symbol + "%{y:,.2f}<extra></extra>"
     ))
 
-    # 2. Holdout Test Actual
+    # 2. Holdout Test Actual (Mint Emerald)
     fig.add_trace(go.Scatter(
         x=test_dates,
         y=test_actuals,
         mode="lines+markers",
-        name="Test Data (Actual)",
+        name="Test Holdout (Actual)",
         line=dict(color="#10B981", width=3),
-        marker=dict(size=8, color="#10B981"),
+        marker=dict(size=9, color="#10B981", line=dict(color="#FFFFFF", width=2)),
         hovertemplate="<b>Test Actual</b>: " + currency_symbol + "%{y:,.2f}<extra></extra>"
     ))
 
-    # 3. Holdout Test Predictions
+    # 3. Model Predictions on Test Holdout (Amber Gold)
     fig.add_trace(go.Scatter(
         x=test_dates,
         y=test_preds,
         mode="lines+markers",
-        name="Test Prediction (Evaluated)",
+        name="Model Prediction (Evaluated)",
         line=dict(color="#F59E0B", width=2.5, dash="dash"),
-        marker=dict(size=8, color="#F59E0B", symbol="diamond"),
+        marker=dict(size=9, color="#F59E0B", symbol="diamond", line=dict(color="#FFFFFF", width=1.5)),
         hovertemplate="<b>Model Prediction</b>: " + currency_symbol + "%{y:,.2f}<extra></extra>"
     ))
 
-    # 4. Next Month Predicted Point
-    all_dates = dates + [next_date]
+    # 4. Connecting Forecast Line
     pred_line_x = [dates[-1], next_date]
     pred_line_y = [featured_df["total_expense"].iloc[-1], next_pred]
 
@@ -356,37 +370,38 @@ def create_ml_forecast_chart(ml_results: dict, currency_symbol: str = "₹") -> 
         x=pred_line_x,
         y=pred_line_y,
         mode="lines",
-        line=dict(color="#6366F1", width=2.5, dash="dot"),
-        showlegend=False
+        line=dict(color="#6366F1", width=2, dash="dot"),
+        showlegend=False,
+        hoverinfo="skip"
     ))
 
+    # 5. Next Month Star Marker (Vibrant Iris)
     fig.add_trace(go.Scatter(
         x=[next_date],
         y=[next_pred],
         mode="markers+text",
         name="Next Month ML Forecast",
-        marker=dict(size=14, color="#6366F1", symbol="star"),
-        text=[f"Predicted: {currency_symbol}{next_pred:,.0f}"],
+        marker=dict(size=14, color="#6366F1", symbol="star", line=dict(color="#FFFFFF", width=1.5)),
+        text=[f"{currency_symbol}{next_pred:,.0f}"],
         textposition="top center",
-        hovertemplate="<b>Next Month Forecast</b>: " + currency_symbol + "%{y:,.2f}<br>Range: " + currency_symbol + f"{lower_bound:,.0f} - {currency_symbol}{upper_bound:,.0f}<extra></extra>"
+        hovertemplate="<b>Next Month Forecast</b>: " + currency_symbol + "%{y:,.2f}<br>Range: " + currency_symbol + f"{lower_bound:,.0f} – {currency_symbol}{upper_bound:,.0f}<extra></extra>"
     ))
 
-    # Error bar annotation
+    # 6. Uncertainty Range (± MAE)
     fig.add_trace(go.Scatter(
         x=[next_date, next_date],
         y=[lower_bound, upper_bound],
         mode="lines",
         name="Confidence Interval (± MAE)",
-        line=dict(color="#A5B4FC", width=6),
-        opacity=0.6,
+        line=dict(color="#818CF8", width=5),
+        opacity=0.5,
         hoverinfo="skip"
     ))
 
     fig.update_layout(
         **LAYOUT_DEFAULTS,
-        title=dict(text="<b>Chronological Train/Test Split & ML Forecast</b>", font=dict(size=14, color="#1E1B4B")),
-        xaxis=dict(title="Timeline", showgrid=False),
-        yaxis=dict(title=f"Monthly Spending ({currency_symbol})", showgrid=True, gridcolor="#F1F5F9"),
+        xaxis=dict(title="Timeline", showgrid=False, tickfont=dict(size=11, color="#64748B")),
+        yaxis=dict(title=f"Monthly Spend ({currency_symbol})", showgrid=True, gridcolor="#F1F5F9", tickfont=dict(size=11, color="#64748B")),
         height=380
     )
     return fig

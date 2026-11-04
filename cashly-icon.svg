@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="100%" height="100%">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F172A" />
+      <stop offset="50%" stop-color="#1E1B4B" />
+      <stop offset="100%" stop-color="#4F46E5" />
+    </linearGradient>
+    <linearGradient id="lavenderGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#C7D2FE" />
+      <stop offset="50%" stop-color="#A5B4FC" />
+      <stop offset="100%" stop-color="#818CF8" />
+    </linearGradient>
+    <linearGradient id="glowGrad" x1="0%" y1="100%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#10B981" />
+      <stop offset="100%" stop-color="#6366F1" />
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="130%" height="130%">
+      <feDropShadow dx="0" dy="12" stdDeviation="16" flood-color="#4F46E5" flood-opacity="0.35"/>
+    </filter>
+  </defs>
+
+  <!-- Background Card -->
+  <rect x="32" y="32" width="448" height="448" rx="112" fill="url(#bgGrad)" filter="url(#shadow)" />
+  <rect x="32" y="32" width="448" height="448" rx="112" fill="none" stroke="#C7D2FE" stroke-width="3" stroke-opacity="0.25" />
+
+  <!-- Credit Card / Wallet Shape -->
+  <rect x="106" y="140" width="300" height="190" rx="24" fill="#1E1B4B" stroke="url(#lavenderGrad)" stroke-width="6" opacity="0.95" />
+  <path d="M 106 195 L 406 195" stroke="#4F46E5" stroke-width="12" opacity="0.7" />
+
+  <!-- Chip & NFC Contactless Waves -->
+  <rect x="146" y="225" width="48" height="38" rx="8" fill="#F59E0B" />
+  <path d="M 345 230 A 18 18 0 0 1 345 260" fill="none" stroke="#C7D2FE" stroke-width="4" stroke-linecap="round" />
+  <path d="M 358 222 A 28 28 0 0 1 358 268" fill="none" stroke="#C7D2FE" stroke-width="4" stroke-linecap="round" />
+
+  <!-- Upward Trend Line & Star (AI Growth) -->
+  <path d="M 110 390 L 210 320 L 290 355 L 400 240" fill="none" stroke="url(#glowGrad)" stroke-width="12" stroke-linecap="round" stroke-linejoin="round" />
+  <circle cx="400" cy="240" r="14" fill="#10B981" stroke="#FFFFFF" stroke-width="4" />
+
+  <!-- Small Glowing Sparkles -->
+  <polygon points="380,120 385,135 400,140 385,145 380,160 375,145 360,140 375,135" fill="#C7D2FE" />
+</svg>
