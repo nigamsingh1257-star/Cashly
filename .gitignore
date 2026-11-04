@@ -1,0 +1,60 @@
+# =========================================================
+# Cashly - Git Ignore Configuration
+# =========================================================
+
+# Database files & local SQLite data (NEVER commit databases)
+*.db
+*.db-journal
+*.sqlite
+*.sqlite3
+data/*.db
+data/*.db-journal
+data/spendwise.db
+data/cashly.db
+
+# Private exports & financial statements
+*.csv
+spendwise_ledger_export.csv
+spendwise_statement_*.csv
+cashly_ledger_export.csv
+cashly_statement_*.csv
+
+# Secrets, API keys & environment files
+.env
+.env.*
+*.env
+.streamlit/secrets.toml
+
+# Byte-compiled / optimized / Python caches
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual Environments
+.venv/
+venv/
+ENV/
+env/
+env.bak/
+venv.bak/
+
+# Streamlit temporary local logs & state
+.streamlit/.cache/
+*.log
+
+# Operating System temporary files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+desktop.ini
+
+# IDE & Editor configs
+.vscode/
+.idea/
+*.swp
+*.swo
