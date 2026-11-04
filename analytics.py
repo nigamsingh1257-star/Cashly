@@ -23,15 +23,15 @@ COLOR_PALETTE = [
 LAYOUT_DEFAULTS = dict(
     paper_bgcolor="rgba(0,0,0,0)",
     plot_bgcolor="rgba(0,0,0,0)",
-    font=dict(family="'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif", color="#1E293B", size=12),
-    margin=dict(l=15, r=15, t=35, b=15),
+    font=dict(family="'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif", color="#1E293B", size=11),
+    margin=dict(l=12, r=12, t=32, b=20),
     legend=dict(
         orientation="h",
         yanchor="bottom",
         y=1.02,
-        xanchor="right",
-        x=1,
-        font=dict(size=11, color="#475569")
+        xanchor="center",
+        x=0.5,
+        font=dict(size=10.5, color="#475569")
     ),
     hoverlabel=dict(
         bgcolor="#1E1B4B",
@@ -40,6 +40,13 @@ LAYOUT_DEFAULTS = dict(
         font_color="#FFFFFF"
     )
 )
+
+
+def apply_layout_defaults(**overrides) -> dict:
+    """Merges overrides on top of LAYOUT_DEFAULTS to avoid duplicate keyword arguments."""
+    layout = dict(LAYOUT_DEFAULTS)
+    layout.update(overrides)
+    return layout
 
 
 def create_category_donut_chart(df: pd.DataFrame, currency_symbol: str = "₹") -> go.Figure:
@@ -81,9 +88,19 @@ def create_category_donut_chart(df: pd.DataFrame, currency_symbol: str = "₹") 
     )
 
     fig.update_layout(
-        **LAYOUT_DEFAULTS,
-        showlegend=True,
-        height=350
+        **apply_layout_defaults(
+            showlegend=True,
+            legend=dict(
+                orientation="h",
+                yanchor="top",
+                y=-0.08,
+                xanchor="center",
+                x=0.5,
+                font=dict(size=10, color="#475569")
+            ),
+            margin=dict(l=10, r=10, t=15, b=50),
+            height=360
+        )
     )
     return fig
 
@@ -167,11 +184,21 @@ def create_income_vs_expense_chart(df: pd.DataFrame, monthly_income: float, curr
     ))
 
     fig.update_layout(
-        **LAYOUT_DEFAULTS,
-        barmode="group",
-        xaxis=dict(title="", showgrid=False, tickfont=dict(size=11, color="#64748B")),
-        yaxis=dict(title=f"Amount ({currency_symbol})", showgrid=True, gridcolor="#F1F5F9", tickfont=dict(size=11, color="#64748B")),
-        height=340
+        **apply_layout_defaults(
+            barmode="group",
+            legend=dict(
+                orientation="h",
+                yanchor="bottom",
+                y=1.02,
+                xanchor="center",
+                x=0.5,
+                font=dict(size=10.5, color="#475569")
+            ),
+            margin=dict(l=10, r=10, t=35, b=20),
+            xaxis=dict(title="", showgrid=False, tickfont=dict(size=10.5, color="#64748B")),
+            yaxis=dict(title=f"Amount ({currency_symbol})", showgrid=True, gridcolor="#F1F5F9", tickfont=dict(size=10.5, color="#64748B")),
+            height=330
+        )
     )
     return fig
 
@@ -205,10 +232,12 @@ def create_top_categories_bar_chart(df: pd.DataFrame, currency_symbol: str = "�
     ))
 
     fig.update_layout(
-        **LAYOUT_DEFAULTS,
-        xaxis=dict(title=f"Spending ({currency_symbol})", showgrid=True, gridcolor="#F1F5F9", tickfont=dict(size=11, color="#64748B")),
-        yaxis=dict(title="", showgrid=False, tickfont=dict(size=11, color="#1E293B")),
-        height=330
+        **apply_layout_defaults(
+            margin=dict(l=5, r=25, t=15, b=20),
+            xaxis=dict(title="", showgrid=True, gridcolor="#F1F5F9", tickfont=dict(size=10.5, color="#64748B")),
+            yaxis=dict(title="", showgrid=False, tickfont=dict(size=11, color="#1E293B")),
+            height=330
+        )
     )
     return fig
 
@@ -399,9 +428,19 @@ def create_ml_forecast_chart(ml_results: dict, currency_symbol: str = "₹") -> 
     ))
 
     fig.update_layout(
-        **LAYOUT_DEFAULTS,
-        xaxis=dict(title="Timeline", showgrid=False, tickfont=dict(size=11, color="#64748B")),
-        yaxis=dict(title=f"Monthly Spend ({currency_symbol})", showgrid=True, gridcolor="#F1F5F9", tickfont=dict(size=11, color="#64748B")),
-        height=380
+        **apply_layout_defaults(
+            legend=dict(
+                orientation="h",
+                yanchor="top",
+                y=-0.18,
+                xanchor="center",
+                x=0.5,
+                font=dict(size=10, color="#475569")
+            ),
+            margin=dict(l=10, r=15, t=25, b=65),
+            xaxis=dict(title="", showgrid=False, tickfont=dict(size=10.5, color="#64748B")),
+            yaxis=dict(title=f"Monthly Spend ({currency_symbol})", showgrid=True, gridcolor="#F1F5F9", tickfont=dict(size=10.5, color="#64748B")),
+            height=390
+        )
     )
     return fig

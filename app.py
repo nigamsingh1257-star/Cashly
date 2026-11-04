@@ -84,7 +84,7 @@ CUSTOM_CSS = """
 
     /* Responsive Main Block Container */
     .block-container {
-        padding-top: 1.8rem !important;
+        padding-top: 2.2rem !important;
         padding-bottom: 2.5rem !important;
         padding-left: 1.25rem !important;
         padding-right: 1.25rem !important;
@@ -96,29 +96,37 @@ CUSTOM_CSS = """
         background: linear-gradient(135deg, #0B132B 0%, #1E1B4B 45%, #312E81 80%, #4338CA 100%);
         border: 1px solid rgba(199, 210, 254, 0.25);
         border-radius: 18px;
-        padding: 24px 30px;
+        padding: 22px 28px;
         color: white;
         margin-bottom: 20px;
         box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.25), 0 4px 10px -2px rgba(15, 23, 42, 0.15);
+        overflow: visible;
+        box-sizing: border-box;
     }
     .hero-title {
         font-size: clamp(20px, 2.5vw, 26px);
         font-weight: 800;
         margin-bottom: 6px;
-        letter-spacing: -0.5px;
-        line-height: 1.2;
+        letter-spacing: -0.3px;
+        line-height: 1.35;
+        overflow: visible;
+        word-break: normal;
+        overflow-wrap: break-word;
     }
     .hero-subtitle {
         font-size: clamp(12px, 1.4vw, 14px);
         color: #C7D2FE;
         font-weight: 500;
-        line-height: 1.4;
+        line-height: 1.45;
+        overflow: visible;
+        word-break: normal;
+        overflow-wrap: break-word;
     }
 
-    /* Responsive KPI Grids (Auto-fit across desktop, tablet, and mobile) */
+    /* Responsive KPI Grids */
     .kpi-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+        grid-template-columns: repeat(5, minmax(0, 1fr));
         gap: 14px;
         margin-bottom: 18px;
         width: 100%;
@@ -139,7 +147,7 @@ CUSTOM_CSS = """
         background: #FFFFFF;
         border: 1px solid #E0E7FF;
         border-radius: 16px;
-        padding: 18px;
+        padding: 16px 18px;
         box-shadow: 0 4px 16px -2px rgba(99, 102, 241, 0.06), 0 2px 6px -1px rgba(0, 0, 0, 0.03);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
         display: flex;
@@ -153,11 +161,20 @@ CUSTOM_CSS = """
         box-shadow: 0 10px 25px -4px rgba(99, 102, 241, 0.12);
         border-color: #C7D2FE;
     }
+    .kpi-card-span {
+        grid-column: auto;
+    }
+    .kpi-card-span .kpi-span-content {
+        display: flex;
+        align-items: baseline;
+        gap: 8px;
+    }
     .kpi-card-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 8px;
+        gap: 6px;
     }
     .kpi-icon-badge {
         width: 32px;
@@ -170,34 +187,29 @@ CUSTOM_CSS = """
         flex-shrink: 0;
     }
     .kpi-label {
-        font-size: 11.5px;
+        font-size: 11px;
         font-weight: 700;
         color: #64748B;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        letter-spacing: 0.3px;
+        white-space: normal;
+        line-height: 1.25;
         word-break: normal;
-        overflow-wrap: normal;
+        overflow-wrap: break-word;
         hyphens: none;
     }
     .kpi-value {
-        font-size: clamp(20px, 2.2vw, 26px);
+        font-size: clamp(19px, 2.2vw, 25px);
         font-weight: 800;
         color: #1E1B4B;
         letter-spacing: -0.5px;
-        line-height: 1.25;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
+        line-height: 1.2;
+        margin: 4px 0 2px 0;
         word-break: normal;
         overflow-wrap: normal;
-        hyphens: none;
-        margin: 4px 0 2px 0;
     }
     .kpi-subtext {
-        font-size: 11.5px;
+        font-size: 11px;
         font-weight: 600;
         color: #64748B;
         white-space: normal;
@@ -328,22 +340,46 @@ CUSTOM_CSS = """
         background-color: #EEF2FF !important;
     }
 
+    /* Tablet & Medium Screen Optimizations */
+    @media (max-width: 991px) {
+        .kpi-grid {
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+            gap: 12px !important;
+        }
+        .kpi-card-span {
+            grid-column: 1 / -1 !important;
+        }
+    }
+
     /* Mobile Responsive Optimizations */
     @media (max-width: 768px) {
         .block-container {
             padding-left: 0.75rem !important;
             padding-right: 0.75rem !important;
-            padding-top: 1rem !important;
+            padding-top: 3.4rem !important;
+            padding-bottom: 2rem !important;
         }
         .hero-banner {
             padding: 16px 18px !important;
             border-radius: 14px !important;
             margin-bottom: 14px !important;
         }
+        .hero-title {
+            font-size: 19px !important;
+            line-height: 1.35 !important;
+            margin-bottom: 4px !important;
+        }
+        .hero-subtitle {
+            font-size: 12px !important;
+            line-height: 1.4 !important;
+        }
         .kpi-grid {
-            grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)) !important;
+            grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
             gap: 10px !important;
             margin-bottom: 14px !important;
+        }
+        .kpi-card-span {
+            grid-column: 1 / -1 !important;
         }
         .kpi-grid-3 {
             grid-template-columns: 1fr !important;
@@ -354,15 +390,30 @@ CUSTOM_CSS = """
             border-radius: 12px !important;
         }
         .kpi-label {
-            font-size: 10.5px !important;
-            margin-bottom: 4px !important;
+            font-size: 10px !important;
+            line-height: 1.25 !important;
+            margin-bottom: 2px !important;
+            white-space: normal !important;
         }
         .kpi-value {
-            font-size: 19px !important;
+            font-size: 18px !important;
+            line-height: 1.2 !important;
         }
         .kpi-subtext {
-            font-size: 10px !important;
-            margin-top: 4px !important;
+            font-size: 10.5px !important;
+            line-height: 1.25 !important;
+        }
+        .chart-card {
+            padding: 14px 14px !important;
+            margin-bottom: 14px !important;
+        }
+        .chart-card-header {
+            flex-wrap: wrap !important;
+            gap: 6px !important;
+            margin-bottom: 8px !important;
+        }
+        .chart-card-title {
+            font-size: 13.5px !important;
         }
         div[data-testid="stHorizontalBlock"] {
             flex-wrap: wrap !important;
@@ -372,6 +423,51 @@ CUSTOM_CSS = """
             min-width: 130px !important;
             flex: 1 1 130px !important;
             margin-bottom: 6px !important;
+        }
+        div[data-testid="column"]:has(.js-plotly-plot),
+        div[data-testid="column"]:has(.chart-card-header),
+        div[data-testid="column"]:has(form) {
+            min-width: 100% !important;
+            flex: 1 1 100% !important;
+        }
+    }
+
+    /* Small Phone Viewports (360px - 390px) */
+    @media (max-width: 390px) {
+        .block-container {
+            padding-left: 0.5rem !important;
+            padding-right: 0.5rem !important;
+            padding-top: 3.5rem !important;
+        }
+        .hero-banner {
+            padding: 14px 14px !important;
+            border-radius: 12px !important;
+        }
+        .hero-title {
+            font-size: 17px !important;
+            line-height: 1.3 !important;
+        }
+        .hero-subtitle {
+            font-size: 11px !important;
+            line-height: 1.35 !important;
+        }
+        .kpi-grid {
+            gap: 8px !important;
+        }
+        .kpi-card {
+            padding: 10px 10px !important;
+        }
+        .kpi-label {
+            font-size: 9.5px !important;
+            letter-spacing: 0.1px !important;
+        }
+        .kpi-value {
+            font-size: 16.5px !important;
+        }
+        .kpi-icon-badge {
+            width: 26px !important;
+            height: 26px !important;
+            font-size: 13px !important;
         }
     }
 </style>
@@ -563,7 +659,7 @@ def render_dashboard(curr_symbol: str, monthly_income: float, monthly_budget: fl
         <div class="kpi-grid">
             <div class="kpi-card">
                 <div class="kpi-card-header">
-                    <span class="kpi-label">💸 {ref_month_name} Spend</span>
+                    <span class="kpi-label">{ref_month_name} Spend</span>
                     <div class="kpi-icon-badge" style="background: #EEF2FF; color: #4F46E5;">💸</div>
                 </div>
                 <div class="kpi-value">{curr_symbol}{total_spent:,.0f}</div>
@@ -571,7 +667,7 @@ def render_dashboard(curr_symbol: str, monthly_income: float, monthly_budget: fl
             </div>
             <div class="kpi-card">
                 <div class="kpi-card-header">
-                    <span class="kpi-label">💰 Monthly Income</span>
+                    <span class="kpi-label">Monthly Income</span>
                     <div class="kpi-icon-badge" style="background: #ECFDF5; color: #059669;">💰</div>
                 </div>
                 <div class="kpi-value">{curr_symbol}{monthly_income:,.0f}</div>
@@ -579,7 +675,7 @@ def render_dashboard(curr_symbol: str, monthly_income: float, monthly_budget: fl
             </div>
             <div class="kpi-card">
                 <div class="kpi-card-header">
-                    <span class="kpi-label">⚖️ Net Balance</span>
+                    <span class="kpi-label">Net Balance</span>
                     <div class="kpi-icon-badge" style="background: {'#ECFDF5' if balance >= 0 else '#FEF2F2'}; color: {'#059669' if balance >= 0 else '#DC2626'};">⚖️</div>
                 </div>
                 <div class="kpi-value" style="color: {bal_color};">{curr_symbol}{balance:,.0f}</div>
@@ -587,19 +683,22 @@ def render_dashboard(curr_symbol: str, monthly_income: float, monthly_budget: fl
             </div>
             <div class="kpi-card">
                 <div class="kpi-card-header">
-                    <span class="kpi-label">📈 Savings Rate</span>
+                    <span class="kpi-label">Savings Rate</span>
                     <div class="kpi-icon-badge" style="background: #F5F3FF; color: #7C3AED;">📈</div>
                 </div>
                 <div class="kpi-value" style="color: {sav_color};">{savings_pct:.1f}%</div>
                 <div class="kpi-subtext" style="color: {sav_color};">Benchmark: 20%</div>
             </div>
-            <div class="kpi-card">
+            <div class="kpi-card kpi-card-span">
                 <div class="kpi-card-header">
-                    <span class="kpi-label">🎯 Budget Used</span>
+                    <span class="kpi-label">Budget Utilization</span>
                     <div class="kpi-icon-badge" style="background: {'#FEF2F2' if budget_health['is_exceeded'] else '#FFFBEB'}; color: {'#DC2626' if budget_health['is_exceeded'] else '#D97706'};">🎯</div>
                 </div>
-                <div class="kpi-value" style="color: {util_color};">{budget_health['utilization_pct']}%</div>
-                <div class="kpi-subtext" style="color: {util_color};">{budget_health['status']}</div>
+                <div class="kpi-span-content">
+                    <div class="kpi-value" style="color: {util_color};">{budget_health['utilization_pct']}%</div>
+                    <div class="kpi-subtext" style="color: {util_color}; font-weight: 700;">{budget_health['status']}</div>
+                </div>
+                <div class="kpi-subtext" style="color: #64748B;">{curr_symbol}{total_spent:,.0f} spent of {curr_symbol}{monthly_budget:,.0f} limit</div>
             </div>
         </div>
         """,
@@ -1140,7 +1239,7 @@ def render_insights(curr_symbol: str, monthly_income: float, monthly_budget: flo
             <div class="kpi-grid-3">
                 <div class="kpi-card">
                     <div class="kpi-card-header">
-                        <span class="kpi-label">🏠 Needs (Target: 50%)</span>
+                        <span class="kpi-label">Needs (Target: 50%)</span>
                         <div class="kpi-icon-badge" style="background: #EEF2FF; color: #4F46E5;">🏠</div>
                     </div>
                     <div class="kpi-value">{rule_info['needs_pct']}%</div>
@@ -1148,7 +1247,7 @@ def render_insights(curr_symbol: str, monthly_income: float, monthly_budget: flo
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-card-header">
-                        <span class="kpi-label">🛍️ Wants (Target: 30%)</span>
+                        <span class="kpi-label">Wants (Target: 30%)</span>
                         <div class="kpi-icon-badge" style="background: #FDF4FF; color: #C026D3;">🛍️</div>
                     </div>
                     <div class="kpi-value">{rule_info['wants_pct']}%</div>
@@ -1156,7 +1255,7 @@ def render_insights(curr_symbol: str, monthly_income: float, monthly_budget: flo
                 </div>
                 <div class="kpi-card">
                     <div class="kpi-card-header">
-                        <span class="kpi-label">💰 Savings (Target: 20%)</span>
+                        <span class="kpi-label">Savings (Target: 20%)</span>
                         <div class="kpi-icon-badge" style="background: #ECFDF5; color: #059669;">💰</div>
                     </div>
                     <div class="kpi-value">{rule_info['savings_pct']}%</div>
