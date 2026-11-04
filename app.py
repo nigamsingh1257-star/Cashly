@@ -71,15 +71,24 @@ init_db()
 CUSTOM_CSS = """
 <style>
     /* Google Fonts */
-    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700&display=swap');
     
     html, body, [class*="css"] {
-        font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+        font-family: 'Plus Jakarta Sans', 'Inter', system-ui, -apple-system, sans-serif;
     }
 
-    /* Main background */
+    /* Main background & Container padding */
     .stApp {
         background-color: #F8FAFC;
+    }
+
+    /* Responsive Block Container */
+    .block-container {
+        padding-top: 1.8rem !important;
+        padding-bottom: 2.5rem !important;
+        padding-left: 1.25rem !important;
+        padding-right: 1.25rem !important;
+        max-width: 100% !important;
     }
 
     /* Custom Header Banner */
@@ -88,53 +97,97 @@ CUSTOM_CSS = """
         border-radius: 18px;
         padding: 24px 30px;
         color: white;
-        margin-bottom: 25px;
+        margin-bottom: 20px;
         box-shadow: 0 10px 25px -5px rgba(79, 70, 229, 0.25);
     }
     .hero-title {
-        font-size: 26px;
+        font-size: clamp(20px, 2.5vw, 26px);
         font-weight: 800;
         margin-bottom: 6px;
         letter-spacing: -0.5px;
+        line-height: 1.2;
     }
     .hero-subtitle {
-        font-size: 14px;
+        font-size: clamp(12px, 1.4vw, 14px);
         color: #C7D2FE;
         font-weight: 500;
+        line-height: 1.4;
+    }
+
+    /* Responsive KPI Grids (Auto-fit across desktop, tablet, and mobile) */
+    .kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(185px, 1fr));
+        gap: 14px;
+        margin-bottom: 18px;
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    .kpi-grid-3 {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+        gap: 14px;
+        margin-bottom: 18px;
+        width: 100%;
+        box-sizing: border-box;
     }
 
     /* KPI Cards */
     .kpi-card {
         background: #FFFFFF;
         border: 1px solid #E0E7FF;
-        border-radius: 16px;
-        padding: 20px;
-        margin-bottom: 12px;
+        border-radius: 14px;
+        padding: 16px 18px;
+        margin-bottom: 0px;
         box-shadow: 0 4px 12px rgba(99, 102, 241, 0.05);
         transition: transform 0.2s ease, box-shadow 0.2s ease;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        min-width: 0;
+        box-sizing: border-box;
     }
     .kpi-card:hover {
         transform: translateY(-2px);
         box-shadow: 0 8px 20px rgba(99, 102, 241, 0.12);
     }
     .kpi-label {
-        font-size: 13px;
-        font-weight: 600;
+        font-size: 11.5px;
+        font-weight: 700;
         color: #64748B;
         text-transform: uppercase;
-        letter-spacing: 0.5px;
+        letter-spacing: 0.4px;
         margin-bottom: 6px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: normal;
+        overflow-wrap: normal;
+        hyphens: none;
     }
     .kpi-value {
-        font-size: 26px;
+        font-size: clamp(20px, 2vw, 25px);
         font-weight: 800;
         color: #1E1B4B;
         letter-spacing: -0.5px;
+        line-height: 1.25;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        word-break: normal;
+        overflow-wrap: normal;
+        hyphens: none;
     }
     .kpi-subtext {
-        font-size: 12px;
+        font-size: 11.5px;
         margin-top: 6px;
-        font-weight: 500;
+        font-weight: 600;
+        color: #64748B;
+        white-space: normal;
+        word-break: normal;
+        overflow-wrap: break-word;
+        line-height: 1.35;
     }
 
     /* Pill Badges */
@@ -174,14 +227,37 @@ CUSTOM_CSS = """
         padding: 16px 20px;
         margin-bottom: 14px;
         box-shadow: 0 2px 8px rgba(0,0,0,0.04);
+        word-break: normal;
     }
 
-    /* Streamlit overrides */
+    /* Streamlit Metric Overrides */
     div[data-testid="stMetricValue"] {
-        font-size: 26px !important;
+        font-size: clamp(18px, 1.8vw, 24px) !important;
         font-weight: 800 !important;
         color: #1E1B4B !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        word-break: normal !important;
+        overflow-wrap: normal !important;
     }
+    div[data-testid="stMetricLabel"] {
+        font-size: 11.5px !important;
+        font-weight: 700 !important;
+        color: #64748B !important;
+        text-transform: uppercase !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+        word-break: normal !important;
+    }
+    div[data-testid="stMetricDelta"] {
+        font-size: 11.5px !important;
+        white-space: nowrap !important;
+        overflow: hidden !important;
+        text-overflow: ellipsis !important;
+    }
+
     .stButton>button {
         border-radius: 10px;
         font-weight: 600;
@@ -190,6 +266,53 @@ CUSTOM_CSS = """
     .stDownloadButton>button {
         border-radius: 10px;
         font-weight: 600;
+    }
+
+    /* Mobile Responsive Optimizations */
+    @media (max-width: 768px) {
+        .block-container {
+            padding-left: 0.75rem !important;
+            padding-right: 0.75rem !important;
+            padding-top: 1rem !important;
+        }
+        .hero-banner {
+            padding: 16px 18px !important;
+            border-radius: 14px !important;
+            margin-bottom: 14px !important;
+        }
+        .kpi-grid {
+            grid-template-columns: repeat(auto-fit, minmax(135px, 1fr)) !important;
+            gap: 10px !important;
+            margin-bottom: 14px !important;
+        }
+        .kpi-grid-3 {
+            grid-template-columns: 1fr !important;
+            gap: 10px !important;
+        }
+        .kpi-card {
+            padding: 12px 14px !important;
+            border-radius: 12px !important;
+        }
+        .kpi-label {
+            font-size: 10.5px !important;
+            margin-bottom: 4px !important;
+        }
+        .kpi-value {
+            font-size: 19px !important;
+        }
+        .kpi-subtext {
+            font-size: 10px !important;
+            margin-top: 4px !important;
+        }
+        div[data-testid="stHorizontalBlock"] {
+            flex-wrap: wrap !important;
+            gap: 10px !important;
+        }
+        div[data-testid="column"] {
+            min-width: 130px !important;
+            flex: 1 1 130px !important;
+            margin-bottom: 6px !important;
+        }
     }
 </style>
 """
@@ -341,71 +464,43 @@ def render_dashboard(curr_symbol: str, monthly_income: float, monthly_budget: fl
     elif budget_health["utilization_pct"] >= 85:
         st.warning(f"⚠️ **Budget Warning:** You have consumed {budget_health['utilization_pct']}% of your {ref_month_name} budget. {curr_symbol}{budget_health['remaining_budget']:,.2f} remaining.")
 
-    # KPI Summary Cards (5 Key Metrics)
-    col1, col2, col3, col4, col5 = st.columns(5)
+    # Responsive KPI Summary Cards (Auto-fit across all screen widths)
+    bal_color = "#10B981" if balance >= 0 else "#EF4444"
+    sav_color = "#10B981" if savings_pct >= 20 else "#F59E0B"
+    util_color = budget_health["color"]
 
-    with col1:
-        st.markdown(
-            f"""
+    st.markdown(
+        f"""
+        <div class="kpi-grid">
             <div class="kpi-card">
                 <div class="kpi-label">💸 {ref_month_name} Spend</div>
                 <div class="kpi-value">{curr_symbol}{total_spent:,.0f}</div>
                 <div class="kpi-subtext" style="color: #6366F1;">{len(curr_month_df)} transactions</div>
             </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-    with col2:
-        st.markdown(
-            f"""
             <div class="kpi-card">
                 <div class="kpi-label">💰 Monthly Income</div>
                 <div class="kpi-value">{curr_symbol}{monthly_income:,.0f}</div>
                 <div class="kpi-subtext" style="color: #10B981;">Fixed Monthly Target</div>
             </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-    with col3:
-        bal_color = "#10B981" if balance >= 0 else "#EF4444"
-        st.markdown(
-            f"""
             <div class="kpi-card">
                 <div class="kpi-label">⚖️ Net Balance</div>
                 <div class="kpi-value" style="color: {bal_color};">{curr_symbol}{balance:,.0f}</div>
                 <div class="kpi-subtext" style="color: {bal_color};">{'Surplus' if balance >= 0 else 'Deficit'}</div>
             </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-    with col4:
-        sav_color = "#10B981" if savings_pct >= 20 else "#F59E0B"
-        st.markdown(
-            f"""
             <div class="kpi-card">
                 <div class="kpi-label">📈 Savings Rate</div>
                 <div class="kpi-value" style="color: {sav_color};">{savings_pct:.1f}%</div>
                 <div class="kpi-subtext" style="color: {sav_color};">Benchmark: 20%</div>
             </div>
-            """,
-            unsafe_allow_html=True
-        )
-
-    with col5:
-        util_color = budget_health["color"]
-        st.markdown(
-            f"""
             <div class="kpi-card">
                 <div class="kpi-label">🎯 Budget Used</div>
                 <div class="kpi-value" style="color: {util_color};">{budget_health['utilization_pct']}%</div>
                 <div class="kpi-subtext" style="color: {util_color};">{budget_health['status']}</div>
             </div>
-            """,
-            unsafe_allow_html=True
-        )
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
     # Visual Budget Progress Bar
     util_clamped = min(1.0, total_spent / monthly_budget) if monthly_budget > 0 else 0.0
@@ -872,40 +967,28 @@ def render_insights(curr_symbol: str, monthly_income: float, monthly_budget: flo
     st.markdown("##### ⚖️ 50/30/20 Financial Health Benchmark")
     rule_info = calculate_50_30_20_split(monthly_income, df_curr)
     if rule_info:
-        r1, r2, r3 = st.columns(3)
-        with r1:
-            st.markdown(
-                f"""
+        st.markdown(
+            f"""
+            <div class="kpi-grid-3">
                 <div class="kpi-card">
                     <div class="kpi-label">🏠 Needs (Target: 50%)</div>
                     <div class="kpi-value">{rule_info['needs_pct']}%</div>
                     <div class="kpi-subtext">{curr_symbol}{rule_info['needs_spent']:,.0f} (Bills, Food, Health, Education)</div>
                 </div>
-                """,
-                unsafe_allow_html=True
-            )
-        with r2:
-            st.markdown(
-                f"""
                 <div class="kpi-card">
                     <div class="kpi-label">🛍️ Wants (Target: 30%)</div>
                     <div class="kpi-value">{rule_info['wants_pct']}%</div>
                     <div class="kpi-subtext">{curr_symbol}{rule_info['wants_spent']:,.0f} (Shopping, Travel, Entertainment)</div>
                 </div>
-                """,
-                unsafe_allow_html=True
-            )
-        with r3:
-            st.markdown(
-                f"""
                 <div class="kpi-card">
                     <div class="kpi-label">💰 Savings (Target: 20%)</div>
                     <div class="kpi-value">{rule_info['savings_pct']}%</div>
                     <div class="kpi-subtext">{curr_symbol}{rule_info['savings']:,.0f} Net Savings Buffer</div>
                 </div>
-                """,
-                unsafe_allow_html=True
-            )
+            </div>
+            """,
+            unsafe_allow_html=True
+        )
     else:
         st.info("Set your monthly income in Settings to enable the 50/30/20 financial benchmark.")
 
